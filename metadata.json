@@ -1,0 +1,6 @@
+{
+  "name": "Site Nova",
+  "description": "Blazing-fast, high-performance web agency and design automation platform.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

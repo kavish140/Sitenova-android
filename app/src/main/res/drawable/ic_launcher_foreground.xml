@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- Glowing soft radial aura behind the central star represented by semi-transparent circles -->
+    <path
+        android:fillColor="#1500F2FE"
+        android:pathData="M54,54m-24,0a24,24 0,1 1,48 0a24,24 0,1 1,-48 0" />
+    <path
+        android:fillColor="#3000F2FE"
+        android:pathData="M54,54m-16,0a16,16 0,1 1,32 0a16,16 0,1 1,-32 0" />
+
+    <!-- Ribbon 1 (Main looped 'S' ribbon): Neon Cyan -->
+    <path
+        android:strokeWidth="5.5"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:fillColor="#00000000"
+        android:strokeColor="#00F2FE"
+        android:pathData="M 36,34 C 36,25 48,21 56,25 C 64,29 68,36 62,44 L 46,64 C 40,72 44,79 52,83 C 60,87 72,83 72,74" />
+
+    <!-- Ribbon 2 (Interwoven mirrored loop): Radiant Purple/Indigo -->
+    <path
+        android:strokeWidth="5.5"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:fillColor="#00000000"
+        android:strokeColor="#9D4EDD"
+        android:pathData="M 72,34 C 72,25 60,21 52,25 C 44,29 40,36 46,44 L 62,64 C 68,72 64,79 56,83 C 48,87 36,83 36,74" />
+
+    <!-- Left sharp triangular accent (Cyan-Blue) -->
+    <path
+        android:strokeWidth="5.0"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:fillColor="#00000000"
+        android:strokeColor="#00A2FD"
+        android:pathData="M 24,40 L 36,54 L 24,68" />
+
+    <!-- Right sharp triangular accent (Violet-Fuchsia) -->
+    <path
+        android:strokeWidth="5.0"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:fillColor="#00000000"
+        android:strokeColor="#BD5EFC"
+        android:pathData="M 84,68 L 72,54 L 84,40" />
+
+    <!-- Central Glowing Hyperbolic 4-pointed Star - Outer light teal wrap -->
+    <path
+        android:fillColor="#80E0F2FE"
+        android:pathData="M 54,34 C 54,46 46,54 34,54 C 46,54 54,62 54,74 C 54,62 62,54 74,54 C 62,54 54,46 54,34 Z" />
+
+    <!-- High-intensity white core star for crisp center definition -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M 54,42 C 54,49 49,54 42,54 C 49,54 54,59 54,66 C 54,59 59,54 66,54 C 59,54 54,49 54,42 Z" />
+
+</vector>
