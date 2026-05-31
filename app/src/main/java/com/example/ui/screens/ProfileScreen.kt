@@ -24,6 +24,7 @@ import androidx.compose.ui.platform.LocalContext
 import android.content.Intent
 import android.net.Uri
 import android.provider.CalendarContract
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -33,9 +34,11 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.ui.theme.*
 import com.example.ui.viewmodel.SiteNovaViewModel
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileScreen(
     viewModel: SiteNovaViewModel,
+    onLogout: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
@@ -150,6 +153,18 @@ fun ProfileScreen(
                         Text(text = "100% Core Web Vitals | Responsive Jamstack Codebase", color = TextSecondary, fontSize = 12.sp)
                     }
                 }
+                
+                Spacer(modifier = Modifier.height(16.dp))
+                Button(
+                    onClick = onLogout,
+                    colors = ButtonDefaults.buttonColors(containerColor = ErrorRed),
+                    modifier = Modifier.fillMaxWidth().height(48.dp),
+                    shape = RoundedCornerShape(12.dp)
+                ) {
+                    Icon(imageVector = Icons.AutoMirrored.Filled.ExitToApp, contentDescription = "Logout", tint = Color.White)
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(text = "Sign Out", color = Color.White, fontWeight = FontWeight.Bold)
+                }
             }
         }
 
@@ -170,7 +185,7 @@ fun ProfileScreen(
                 }
                 Spacer(modifier = Modifier.height(14.dp))
 
-                // Selectable Date Carousel 
+                // Selectable Date via DatePicker
                 Text(
                     text = "SELECT BOOKING DATE",
                     color = TextSecondary,
@@ -179,31 +194,47 @@ fun ProfileScreen(
                     letterSpacing = 1.sp
                 )
                 Spacer(modifier = Modifier.height(8.dp))
-                LazyRow(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    items(calendarDates) { date ->
-                        val isSelected = viewModel.bookingDate == date.value
-                        Box(
-                            modifier = Modifier
-                                .clip(RoundedCornerShape(10.dp))
-                                .background(if (isSelected) AccentSky else DarkSurfaceElevated)
-                                .border(1.dp, if (isSelected) AccentSky else BorderSlate, RoundedCornerShape(10.dp))
-                                .clickable {
-                                    viewModel.bookingDate = date.value
+                
+                var showDatePicker by remember { mutableStateOf(false) }
+                val datePickerState = rememberDatePickerState()
+                
+                if (showDatePicker) {
+                    DatePickerDialog(
+                        onDismissRequest = { showDatePicker = false },
+                        confirmButton = {
+                            TextButton(onClick = {
+                                datePickerState.selectedDateMillis?.let { millis ->
+                                    val sdf = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.US)
+                                    viewModel.bookingDate = sdf.format(java.util.Date(millis))
                                     viewModel.clearBookingStatus()
                                 }
-                                .padding(horizontal = 12.dp, vertical = 10.dp)
-                        ) {
-                            Text(
-                                text = date.label,
-                                color = if (isSelected) DarkBackground else TextSecondary,
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 11.sp
-                            )
+                                showDatePicker = false
+                            }) {
+                                Text("OK", color = AccentSky)
+                            }
+                        },
+                        dismissButton = {
+                            TextButton(onClick = { showDatePicker = false }) {
+                                Text("Cancel", color = TextSecondary)
+                            }
                         }
+                    ) {
+                        DatePicker(state = datePickerState)
                     }
+                }
+                
+                Button(
+                    onClick = { showDatePicker = true },
+                    colors = ButtonDefaults.buttonColors(containerColor = DarkSurfaceElevated),
+                    border = BorderStroke(1.dp, BorderSlate),
+                    modifier = Modifier.fillMaxWidth().height(48.dp),
+                    shape = RoundedCornerShape(12.dp)
+                ) {
+                    Text(
+                        text = if (viewModel.bookingDate.isNotEmpty()) "Selected: ${viewModel.bookingDate}" else "Choose Date",
+                        color = TextPrimary,
+                        fontWeight = FontWeight.Bold
+                    )
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))
@@ -372,9 +403,18 @@ fun ProfileScreen(
                                     putExtra(CalendarContract.Events.DESCRIPTION, "Project Consultation Call with SiteNova. Scheduled for $date at $time")
                                     putExtra(Intent.EXTRA_EMAIL, "kavishganatra5@gmail.com, $email")
                                     putExtra(CalendarContract.Events.EVENT_LOCATION, "Google Meet")
+                                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                                 }
-                                context.startActivity(emailIntent)
-                                context.startActivity(calendarIntent)
+                                try {
+                                    context.startActivity(emailIntent)
+                                } catch (e: Exception) {
+                                    android.widget.Toast.makeText(context, "Mailing requires backend/API! Saved locally.", android.widget.Toast.LENGTH_LONG).show()
+                                }
+                                try {
+                                    context.startActivity(calendarIntent)
+                                } catch (e: Exception) {
+                                    // Ignore calendar crash
+                                }
                                 
                                 // Trigger Local Notification
                                 val notificationManager = context.getSystemService(android.content.Context.NOTIFICATION_SERVICE) as android.app.NotificationManager

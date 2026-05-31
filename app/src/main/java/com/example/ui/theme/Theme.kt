@@ -41,7 +41,7 @@ private val LightColorPalette = lightColorScheme(
 
 @Composable
 fun MyApplicationTheme(
-    darkTheme: Boolean = true, // Default to true as the site is dark-mode first
+    darkTheme: Boolean = false, // Force light mode
     content: @Composable () -> Unit
 ) {
     val colorScheme = if (darkTheme) DarkColorPalette else LightColorPalette

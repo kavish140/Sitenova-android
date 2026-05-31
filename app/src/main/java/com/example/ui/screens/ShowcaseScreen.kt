@@ -29,6 +29,7 @@ fun ShowcaseScreen(
     modifier: Modifier = Modifier
 ) {
     val uriHandler = LocalUriHandler.current
+    val context = androidx.compose.ui.platform.LocalContext.current
 
     val cardGradBrush = remember {
         Brush.linearGradient(
@@ -81,7 +82,8 @@ fun ShowcaseScreen(
                     .background(brush = cardGradBrush)
                     .clickable {
                         try {
-                            uriHandler.openUri(site.url)
+                            val intent = android.content.Intent(android.content.Intent.ACTION_VIEW, android.net.Uri.parse(site.url))
+                            context.startActivity(intent)
                         } catch (e: Exception) {
                             onShowLinkError("Could not open ${site.url}")
                         }

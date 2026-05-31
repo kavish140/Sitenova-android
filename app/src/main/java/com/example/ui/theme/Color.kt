@@ -2,21 +2,21 @@ package com.example.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val DarkBackground = Color(0xFF050505) // Ultra Deep Black
-val DarkSurface = Color(0xFF111111) // Sleek Dark Gray
-val DarkSurfaceElevated = Color(0xFF1A1A1A) // Secondary level Dark Gray
+val DarkBackground = Color(0xFFFFFFFF) // White background for light theme
+val DarkSurface = Color(0xFFF9FAFB)
+val DarkSurfaceElevated = Color(0xFFF3F4F6)
 
-val AccentSky = Color(0xFF7C3AED) // Bold Violet
-val AccentPink = Color(0xFFDB2777) // Radiant Pink
-val AccentFuchsia = Color(0xFFC026D3) // Fuchsia
-val AccentEmerald = Color(0xFF10B981) // Vibrant Green
-val PrimaryWhite = Color(0xFFFAFAFA) // Pure Accent White
+val AccentSky = Color(0xFF2563EB) // Blue
+val AccentPink = Color(0xFFDB2777) 
+val AccentFuchsia = Color(0xFF9333EA) 
+val AccentEmerald = Color(0xFF059669) 
+val PrimaryWhite = Color(0xFF111827) // Invert PrimaryWhite to Dark Gray
 
-val TextPrimary = Color(0xFFFAFAFA)
-val TextSecondary = Color(0xFFA1A1AA)
-val TextMuted = Color(0xFF52525B)
+val TextPrimary = Color(0xFF111827)
+val TextSecondary = Color(0xFF4B5563)
+val TextMuted = Color(0xFF9CA3AF)
 
-val BorderSlate = Color(0xFF222222)
-val BorderFocus = Color(0xFF3F3F46)
-val ErrorRed = Color(0xFFEF4444)
+val BorderSlate = Color(0xFFE5E7EB)
+val BorderFocus = Color(0xFF9CA3AF)
+val ErrorRed = Color(0xFFDC2626)
 

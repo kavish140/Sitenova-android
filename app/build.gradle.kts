@@ -55,6 +55,14 @@ android {
     compose = true
     buildConfig = true
   }
+  defaultConfig {
+    buildConfigField("String", "EMAILJS_SERVICE_ID", "\"${System.getenv("EMAILJS_SERVICE_ID") ?: ""}\"")
+    buildConfigField("String", "EMAILJS_TEMPLATE_ID", "\"${System.getenv("EMAILJS_TEMPLATE_ID") ?: ""}\"")
+    buildConfigField("String", "EMAILJS_CUSTOMER_TEMPLATE_ID", "\"${System.getenv("EMAILJS_CUSTOMER_TEMPLATE_ID") ?: ""}\"")
+    buildConfigField("String", "EMAILJS_USER_ID", "\"${System.getenv("EMAILJS_USER_ID") ?: ""}\"")
+    buildConfigField("String", "GOOGLE_CLIENT_ID", "\"${System.getenv("GOOGLE_CLIENT_ID") ?: ""}\"")
+  }
+
   testOptions { unitTests { isIncludeAndroidResources = true } }
 }
 
@@ -83,6 +91,9 @@ dependencies {
   implementation(libs.androidx.compose.ui.graphics)
   implementation(libs.androidx.compose.ui.tooling.preview)
   implementation(libs.androidx.core.ktx)
+  implementation(libs.androidx.credentials)
+  implementation(libs.androidx.credentials.play.services.auth)
+  implementation(libs.googleid)
   implementation(libs.androidx.work.runtime.ktx)
   // implementation(libs.androidx.datastore.preferences)
   implementation(libs.androidx.lifecycle.runtime.compose)

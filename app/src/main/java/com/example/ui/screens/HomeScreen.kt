@@ -68,7 +68,10 @@ fun HomeScreen(
         listOf(
             CaseStudy("drdiptiganatra.com", "Medical", "Medical portfolio & consulting hub optimized for local searches.", "https://drdiptiganatra.com"),
             CaseStudy("jupiterfastfinance.com", "Finance", "Corporate financial service discovery framework with ultra-low latencies.", "https://jupiterfastfinance.com"),
-            CaseStudy("aismartkit.tech", "Tech", "AI micro-tool aggregator built with modern React components.", "https://aismartkit.tech")
+            CaseStudy("aismartkit.tech", "Tech", "AI micro-tool aggregator built with modern React components.", "https://aismartkit.tech"),
+            CaseStudy("design.sitenova.dev", "Design", "Modern interface design showcase with fluid animations, bold typography, and visual aesthetics.", "https://design.sitenova.dev/"),
+            CaseStudy("ecommerce.sitenova.dev", "Ecommerce", "High-performance digital storefront optimized for conversions, fast checkout flows, and product discovery.", "https://ecommerce.sitenova.dev/"),
+            CaseStudy("buisness-showcase.sitenova.dev", "Business", "Comprehensive corporate presentation highlighting essential services, client portfolios, and enterprise capabilities.", "https://buisness-showcase.sitenova.dev/")
         )
     }
 
@@ -681,7 +684,8 @@ fun HomeScreen(
                             .background(brush = cardGradBrush)
                             .clickable {
                                 try {
-                                    uriHandler.openUri(study.url)
+                                    val intent = android.content.Intent(android.content.Intent.ACTION_VIEW, android.net.Uri.parse(study.url))
+                                    context.startActivity(intent)
                                 } catch (e: Exception) {
                                     onShowLinkError("Website link cannot be opened in this demo environment: ${study.url}")
                                 }

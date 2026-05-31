@@ -45,6 +45,7 @@ fun SiteNovaApp(
     viewModel: SiteNovaViewModel,
     startRoute: String,
     onAuthSuccess: () -> Unit,
+    onLogout: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val navController = rememberNavController()
@@ -93,28 +94,11 @@ fun SiteNovaApp(
                         }
                     },
                     actions = {
-                        // Diagnostic health indicator icon
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier
-                                .padding(end = 12.dp)
-                                .clip(RoundedCornerShape(8.dp))
-                                .background(DarkSurfaceElevated)
-                                .border(1.dp, BorderSlate, RoundedCornerShape(8.dp))
-                                .padding(horizontal = 8.dp, vertical = 4.dp)
-                        ) {
-                            Box(
-                                modifier = Modifier
-                                    .size(8.dp)
-                                    .clip(RoundedCornerShape(100.dp))
-                                    .background(AccentEmerald)
-                            )
-                            Spacer(modifier = Modifier.width(6.dp))
-                            Text(
-                                text = "Node SLA 100%",
-                                color = AccentEmerald,
-                                fontSize = 10.sp,
-                                fontWeight = FontWeight.Bold
+                        IconButton(onClick = { navController.navigate(ROUTE_PROFILE) }) {
+                            Icon(
+                                imageVector = Icons.Default.AccountCircle,
+                                contentDescription = "Profile & Settings",
+                                tint = AccentSky
                             )
                         }
                     },
@@ -132,7 +116,6 @@ fun SiteNovaApp(
                     containerColor = Color(0xFF0F0F0F),
                     tonalElevation = 8.dp,
                     modifier = Modifier
-                        .windowInsetsPadding(WindowInsets.navigationBars)
                         .testTag("site_nova_bottom_nav"),
                     contentColor = TextPrimary
                 ) {
@@ -237,7 +220,7 @@ fun SiteNovaApp(
                         },
                         icon = {
                             Icon(
-                                imageVector = if (currentRoute == ROUTE_SHOWCASE) Icons.Filled.Star else Icons.Outlined.StarRate,
+                                imageVector = if (currentRoute == ROUTE_SHOWCASE) Icons.Filled.Star else Icons.Outlined.Star,
                                 contentDescription = "Showcase"
                             )
                         },
@@ -294,6 +277,7 @@ fun SiteNovaApp(
             ) {
                 composable(ROUTE_AUTH) {
                     com.example.ui.screens.AuthScreen(
+                        viewModel = viewModel,
                         onAuthSuccess = {
                             onAuthSuccess()
                             navController.navigate(ROUTE_HOME) {
@@ -349,7 +333,15 @@ fun SiteNovaApp(
                 }
 
                 composable(ROUTE_PROFILE) {
-                    ProfileScreen(viewModel = viewModel)
+                    ProfileScreen(
+                        viewModel = viewModel,
+                        onLogout = {
+                            onLogout()
+                            navController.navigate(ROUTE_AUTH) {
+                                popUpTo(0) { inclusive = true }
+                            }
+                        }
+                    )
                 }
             }
         }

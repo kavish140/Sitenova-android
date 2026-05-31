@@ -11,9 +11,6 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
-import androidx.work.ExistingWorkPolicy
-import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.WorkManager
 import com.example.data.db.AppDatabase
 import com.example.data.repository.SiteNovaRepository
 import com.example.ui.navigation.ROUTE_AUTH
@@ -22,7 +19,6 @@ import com.example.ui.navigation.SiteNovaApp
 import com.example.ui.theme.MyApplicationTheme
 import com.example.ui.viewmodel.SiteNovaViewModel
 import com.example.ui.viewmodel.SiteNovaViewModelFactory
-import com.example.worker.InactivityWorker
 import java.util.concurrent.TimeUnit
 
 class MainActivity : ComponentActivity() {
@@ -58,8 +54,6 @@ class MainActivity : ComponentActivity() {
             }
         }
 
-        scheduleInactivityWorker()
-
         val sharedPrefs = getSharedPreferences("sitenova_prefs", Context.MODE_PRIVATE)
         val isLoggedIn = sharedPrefs.getBoolean("logged_in", false)
         val startRoute = if (isLoggedIn) ROUTE_HOME else ROUTE_AUTH
@@ -71,20 +65,12 @@ class MainActivity : ComponentActivity() {
                     startRoute = startRoute,
                     onAuthSuccess = {
                         sharedPrefs.edit().putBoolean("logged_in", true).apply()
+                    },
+                    onLogout = {
+                        sharedPrefs.edit().putBoolean("logged_in", false).apply()
                     }
                 )
             }
         }
-    }
-
-    private fun scheduleInactivityWorker() {
-        val workRequest = OneTimeWorkRequestBuilder<InactivityWorker>()
-            .setInitialDelay(3, TimeUnit.DAYS)
-            .build()
-        WorkManager.getInstance(this).enqueueUniqueWork(
-            "inactivity_work",
-            ExistingWorkPolicy.REPLACE,
-            workRequest
-        )
     }
 }
